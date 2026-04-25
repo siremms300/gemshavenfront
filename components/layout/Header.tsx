@@ -1,232 +1,110 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import Logo from '@/components/shared/Logo';
-import NotificationBell from '@/components/shared/NotificationBell';
-import ProfileDropdown from '@/components/shared/ProfileDropdown';
-import Button from '@/components/ui/Button';
-import { FaBars } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import {
+  FaBars,
+  FaBell,
+  FaChevronDown,
+  FaSignOutAlt,
+  FaUser,
+} from 'react-icons/fa';
+import { useState, useRef, useEffect } from 'react';
 
 interface HeaderProps {
-  sidebarOpen?: boolean;
-  onSidebarToggle?: () => void;
-  transparent?: boolean;
-  isMobile?: boolean;
+  onMobileMenuClick: () => void;
+  onSidebarToggle: () => void;
 }
 
-export function Header({ 
-  sidebarOpen, 
-  onSidebarToggle,
-  transparent = false,
-  isMobile = false
-}: HeaderProps) {
-  const { isAuthenticated, user } = useAuth();
-  const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  
-  const isHomePage = pathname === '/';
-  const isAuthPage = pathname === '/login' || pathname === '/register';
-  
-  // Handle scroll effect for homepage
+export function Header({ onMobileMenuClick, onSidebarToggle }: HeaderProps) {
+  const { user, logout } = useAuth();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (!isHomePage) return;
-    
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    const handler = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
     };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isHomePage]);
-  
-  const navItems = [
-    { label: 'Features', href: '/#features' },
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'FAQ', href: '/faq' },
-  ];
-  
-  // Determine header background
-  const getHeaderBg = () => {
-    if (isAuthPage) return 'bg-white shadow-sm';
-    if (isAuthenticated) return 'bg-white border-b border-gray-200';
-    if (isHomePage && !scrolled) return 'bg-white/10 backdrop-blur-sm border-b border-white/20';
-    return 'bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm';
-  };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const initials = `${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`;
 
   return (
-    <header className={`fixed top-0 right-0 left-0 z-30 transition-all duration-300 h-16 lg:h-20 ${getHeaderBg()}`}>
-      <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-full">
-          {/* Left Section */}
-          <div className="flex items-center space-x-3">
-            {/* Mobile Menu Toggle for Authenticated Users */}
-            {isAuthenticated && isMobile && (
-              <button
-                onClick={onSidebarToggle}
-                className="p-2 -ml-2 hover:bg-gray-100 rounded-lg transition"
-                aria-label="Toggle sidebar"
-              >
-                <FaBars className="text-primary text-lg" />
-              </button>
-            )}
+    <header className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0">
+      <div className="flex items-center gap-2">
+        <button onClick={onMobileMenuClick} className="lg:hidden p-1.5 hover:bg-gray-100 rounded">
+          <FaBars size={18} className="text-gray-600" />
+        </button>
+        <button onClick={onSidebarToggle} className="hidden lg:block p-1.5 hover:bg-gray-100 rounded">
+          <FaBars size={18} className="text-gray-600" />
+        </button>
+        <span className="text-sm font-medium text-gray-700 hidden sm:block">
+          Welcome, {user?.firstName}
+        </span>
+      </div>
 
-            {/* Desktop Sidebar Toggle */}
-            {isAuthenticated && !isMobile && (
-              <button
-                onClick={onSidebarToggle}
-                className="p-2 hover:bg-gray-100 rounded-lg transition hidden lg:block"
-                aria-label="Toggle sidebar"
-              >
-                <FaBars className="text-primary text-lg" />
-              </button>
-            )}
-
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
-              <Logo size="md" variant={isHomePage && !scrolled && !isAuthenticated ? 'light' : 'default'} />
-              {!isAuthenticated && !isHomePage && (
-                <span className="hidden sm:inline text-sm text-gray-500">Multipurpose Cooperative</span>
-              )}
-            </Link>
-          </div>
-          
-          {/* Center - Desktop Navigation (Non-authenticated) */}
-          {!isAuthenticated && !isAuthPage && (
-            <nav className="hidden lg:flex items-center space-x-6 absolute left-1/2 -translate-x-1/2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`text-sm font-medium transition-colors whitespace-nowrap ${
-                    isHomePage && !scrolled
-                      ? 'text-white/90 hover:text-white'
-                      : 'text-gray-600 hover:text-primary'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          )}
-          
-          {/* Right Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {isAuthenticated ? (
-              <>
-                {/* Hide notification bell on very small screens */}
-                <div className="hidden xs:block">
-                  <NotificationBell />
-                </div>
-                
-                {/* Profile Dropdown - Hidden on mobile */}
-                <div className="hidden sm:block">
-                  <ProfileDropdown user={user} />
-                </div>
-                
-                {/* Mobile Profile Link */}
-                <Link href="/profile" className="sm:hidden">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm hover:shadow-lg transition-shadow">
-                    {user?.firstName?.[0]}{user?.lastName?.[0]}
+      <div className="flex items-center gap-1">
+        <div ref={notifRef} className="relative">
+          <button onClick={() => setNotifOpen(!notifOpen)} className="p-2 hover:bg-gray-100 rounded relative">
+            <FaBell size={16} className="text-gray-500" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+          </button>
+          {notifOpen && (
+            <div className="absolute right-0 mt-1 w-64 bg-white rounded-lg shadow-lg border z-50">
+              <div className="p-3 border-b">
+                <p className="text-sm font-medium">Notifications</p>
+              </div>
+              <div className="max-h-60 overflow-y-auto">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="p-3 border-b last:border-0 hover:bg-gray-50 cursor-pointer">
+                    <p className="text-sm font-medium">Savings Update</p>
+                    <p className="text-xs text-gray-500">Your savings have been credited</p>
+                    <p className="text-[10px] text-gray-400 mt-1">2 hours ago</p>
                   </div>
-                </Link>
-              </>
-            ) : (
-              <>
-                {/* Desktop Auth Buttons */}
-                <div className="hidden sm:flex items-center space-x-3">
-                  {!isAuthPage && (
-                    <>
-                      <Link href="/login">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className={
-                            isHomePage && !scrolled
-                              ? 'border-white text-white hover:bg-white hover:text-primary'
-                              : ''
-                          }
-                        >
-                          Sign In
-                        </Button>
-                      </Link>
-                      <Link href="/register">
-                        <Button 
-                          variant={isHomePage && !scrolled ? 'secondary' : 'primary'} 
-                          size="sm"
-                        >
-                          Get Started
-                        </Button>
-                      </Link>
-                    </>
-                  )}
-                </div>
-                
-                {/* Mobile Sign In Link */}
-                {!isAuthPage && (
-                  <Link 
-                    href="/login" 
-                    className="sm:hidden text-sm font-medium text-primary hover:text-secondary transition"
-                  >
-                    Sign In
-                  </Link>
-                )}
-                
-                {/* Mobile Menu Button (Non-authenticated) */}
-                {!isAuthPage && (
-                  <button
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition"
-                    aria-label="Toggle menu"
-                  >
-                    <FaBars className={`text-lg ${isHomePage && !scrolled ? 'text-white' : 'text-primary'}`} />
-                  </button>
-                )}
-              </>
-            )}
-          </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div ref={profileRef} className="relative">
+          <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-2 p-1.5 hover:bg-gray-100 rounded">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-xs font-bold">
+              {initials}
+            </div>
+            <FaChevronDown size={10} className="text-gray-400 hidden sm:block" />
+          </button>
+          {profileOpen && (
+            <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border z-50">
+              <div className="p-2 border-b">
+                <p className="text-sm font-medium">{user?.firstName} {user?.lastName}</p>
+                <p className="text-xs text-gray-500">{user?.email}</p>
+              </div>
+              <Link href="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50">
+                <FaUser size={14} /> Profile
+              </Link>
+              <button
+                onClick={() => { setProfileOpen(false); logout(); }}
+                className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+              >
+                <FaSignOutAlt size={14} /> Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      
-      {/* Mobile Navigation Menu (Non-authenticated) */}
-      {mobileMenuOpen && !isAuthenticated && !isAuthPage && (
-        <div className="lg:hidden border-t border-gray-200 bg-white shadow-lg">
-          <nav className="flex flex-col p-4 space-y-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition font-medium text-base"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <div className="pt-4 space-y-3 sm:hidden">
-              <Link
-                href="/login"
-                className="block w-full text-center py-3 border-2 border-primary text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                className="block w-full text-center py-3 bg-primary text-white rounded-full font-semibold hover:bg-primary-light transition"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Get Started
-              </Link>
-            </div>
-          </nav>
-        </div>
-      )}
     </header>
   );
 }
 
+// Also export as default
 export default Header;

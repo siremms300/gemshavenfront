@@ -1,157 +1,132 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import api from '@/lib/axios';
-import { formatCurrency } from '@/lib/utils';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import StatCard from '@/components/dashboard/StatCard';
-import QuickAction from '@/components/dashboard/QuickAction';
+import { useAuth } from '@/context/AuthContext';
 import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import {
-  FaPiggyBank,
-  FaHandHoldingUsd,
-  FaChartPie,
+import { 
+  FaPiggyBank, 
+  FaHandHoldingUsd, 
+  FaChartPie, 
   FaCreditCard,
+  FaArrowUp,
   FaPlus,
-  FaExchangeAlt,
+  FaExchangeAlt
 } from 'react-icons/fa';
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const [greeting, setGreeting] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalSavings: 0,
-    activeLoanAmount: 0,
-    totalShares: 0,
-    loanEligibility: 0,
-  });
 
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting('Good Morning');
-    else if (hour < 18) setGreeting('Good Afternoon');
-    else setGreeting('Good Evening');
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Morning' : hour < 18 ? 'Afternoon' : 'Evening';
 
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const response = await api.get('/users/dashboard-stats');
-      setStats(response.data.stats);
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const statCards = [
-    {
-      title: 'Total Savings',
-      value: formatCurrency(stats.totalSavings),
-      change: '+12.5%',
-      increase: true,
-      icon: FaPiggyBank,
-      color: 'from-emerald-500 to-green-500',
-      href: '/savings',
+  const stats = [
+    { 
+      title: 'Total Savings', 
+      value: '₦1,250,000', 
+      change: '+12.5%', 
+      icon: FaPiggyBank, 
+      color: 'text-emerald-600 bg-emerald-100' 
     },
-    {
-      title: 'Active Loan',
-      value: stats.activeLoanAmount > 0 
-        ? formatCurrency(stats.activeLoanAmount) 
-        : 'No active loan',
-      change: stats.activeLoanAmount > 0 ? 'On Track' : 'N/A',
-      increase: true,
-      icon: FaHandHoldingUsd,
-      color: 'from-blue-500 to-cyan-500',
-      href: '/loans',
+    { 
+      title: 'Active Loans', 
+      value: 'No active loan', 
+      change: 'N/A', 
+      icon: FaHandHoldingUsd, 
+      color: 'text-blue-600 bg-blue-100' 
     },
-    {
-      title: 'Shares Value',
-      value: formatCurrency(stats.totalShares),
-      change: '+5.2%',
-      increase: true,
-      icon: FaChartPie,
-      color: 'from-purple-500 to-pink-500',
-      href: '/savings/shares',
+    { 
+      title: 'Shares Value', 
+      value: '₦250,000', 
+      change: '+5.2%', 
+      icon: FaChartPie, 
+      color: 'text-purple-600 bg-purple-100' 
     },
-    {
-      title: 'Loan Eligibility',
-      value: formatCurrency(stats.loanEligibility),
-      change: 'Available',
-      increase: true,
-      icon: FaCreditCard,
-      color: 'from-orange-500 to-red-500',
-      href: '/loans/apply',
+    { 
+      title: 'Loan Eligibility', 
+      value: '₦3,750,000', 
+      change: 'Available', 
+      icon: FaCreditCard, 
+      color: 'text-orange-600 bg-orange-100' 
     },
   ];
 
   const quickActions = [
-    {
-      label: 'Quick Save',
-      icon: FaPiggyBank,
-      color: 'bg-emerald-500',
-      href: '/savings/deposit',
-    },
-    {
-      label: 'Request Loan',
-      icon: FaHandHoldingUsd,
-      color: 'bg-blue-500',
-      href: '/loans/apply',
-    },
-    {
-      label: 'Pay Loan',
-      icon: FaCreditCard,
-      color: 'bg-purple-500',
-      href: '/loans/repay',
-    },
-    {
-      label: 'Transfer',
-      icon: FaExchangeAlt,
-      color: 'bg-orange-500',
-      href: '/transactions/transfer',
-    },
+    { label: 'Quick Save', icon: FaPiggyBank, color: 'bg-emerald-500', href: '/savings/deposit' },
+    { label: 'Request Loan', icon: FaHandHoldingUsd, color: 'bg-blue-500', href: '/loans/apply' },
+    { label: 'Pay Loan', icon: FaCreditCard, color: 'bg-purple-500', href: '/loans/repay' },
+    { label: 'Transfer', icon: FaExchangeAlt, color: 'bg-orange-500', href: '/transactions/transfer' },
   ];
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* Welcome Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-primary">
-              {greeting}, {user?.firstName}! 👋
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Welcome back to your financial dashboard
-            </p>
-          </div>
+        {/* Welcome */}
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+            Good {greeting}, {user?.firstName}!
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5">Welcome back to your financial dashboard</p>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {quickActions.map((action, index) => (
-            <QuickAction key={index} {...action} delay={index * 0.05} />
-          ))}
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statCards.map((stat, index) => (
-            <StatCard
+            <a
               key={index}
-              {...stat}
-              loading={loading}
-              delay={index * 0.1}
-            />
+              href={action.href}
+              className={`${action.color} text-white rounded-xl p-4 flex items-center gap-3 hover:opacity-90 transition-opacity`}
+            >
+              <action.icon size={20} />
+              <span className="text-sm font-medium">{action.label}</span>
+            </a>
           ))}
         </div>
 
-        {/* Additional dashboard content... */}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          {stats.map((stat, index) => (
+            <Card key={index} className="p-5">
+              <div className="flex items-center justify-between">
+                <div className={`p-3 rounded-xl ${stat.color}`}>
+                  <stat.icon size={20} />
+                </div>
+                <span className="text-xs font-medium text-green-600 flex items-center gap-1">
+                  <FaArrowUp size={10} />
+                  {stat.change}
+                </span>
+              </div>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{stat.title}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* Charts & Activity */}
+        <div className="grid lg:grid-cols-3 gap-4">
+          <Card className="lg:col-span-2 p-5">
+            <h3 className="font-semibold text-gray-800 mb-4">Savings Growth</h3>
+            <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+              Chart - Savings Trend (6 months)
+            </div>
+          </Card>
+
+          <Card className="p-5">
+            <h3 className="font-semibold text-gray-800 mb-4">Recent Activity</h3>
+            <div className="space-y-3">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                  <div>
+                    <p className="text-sm font-medium text-gray-700">Monthly Savings</p>
+                    <p className="text-xs text-gray-400">Jun {16 - i}, 2024</p>
+                  </div>
+                  <span className="text-sm font-semibold text-green-600">+₦50,000</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
       </div>
     </DashboardLayout>
   );

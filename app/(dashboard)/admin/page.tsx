@@ -4,38 +4,15 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import api from '@/lib/axios';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 import {
-  FaUsers,
-  FaUserPlus,
-  FaPiggyBank,
-  FaHandHoldingUsd,
-  FaChartLine,
-  FaArrowUp,
-  FaArrowDown,
-  FaClock,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaWallet,
-  FaCreditCard,
-  FaUserFriends,
-  FaCalendar,
-  FaBell
+  FaUsers, FaUserPlus, FaPiggyBank, FaHandHoldingUsd,
+  FaChartLine, FaArrowUp, FaCheckCircle, FaTimesCircle,
+  FaWallet, FaUserFriends, FaBell
 } from 'react-icons/fa';
 import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
 
 export default function AdminDashboardPage() {
@@ -45,11 +22,6 @@ export default function AdminDashboardPage() {
     savings: { total: 0 },
     loans: { active: 0, totalOutstanding: 0, pending: 0 }
   });
-  const [activities, setActivities] = useState<any>({
-    recentMembers: [],
-    recentSavings: [],
-    recentLoans: []
-  });
 
   useEffect(() => {
     fetchDashboardData();
@@ -57,12 +29,8 @@ export default function AdminDashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const [statsRes, activitiesRes] = await Promise.all([
-        api.get('/admin/stats'),
-        api.get('/admin/recent-activities')
-      ]);
+      const [statsRes] = await Promise.all([api.get('/admin/stats')]);
       setStats(statsRes.data.stats);
-      setActivities(activitiesRes.data.activities);
     } catch (error) {
       console.error('Failed to fetch admin data:', error);
     } finally {
@@ -71,42 +39,10 @@ export default function AdminDashboardPage() {
   };
 
   const statCards = [
-    {
-      title: 'Total Members',
-      value: stats.members.total.toLocaleString(),
-      change: '+12%',
-      increase: true,
-      icon: FaUsers,
-      color: 'from-blue-500 to-cyan-500',
-      link: '/admin/members'
-    },
-    {
-      title: 'Active Members',
-      value: stats.members.active.toLocaleString(),
-      change: '+8%',
-      increase: true,
-      icon: FaUserFriends,
-      color: 'from-emerald-500 to-green-500',
-      link: '/admin/members?status=active'
-    },
-    {
-      title: 'Total Savings',
-      value: `₦${stats.savings.total.toLocaleString()}`,
-      change: '+15%',
-      increase: true,
-      icon: FaPiggyBank,
-      color: 'from-purple-500 to-pink-500',
-      link: '/admin/savings'
-    },
-    {
-      title: 'Active Loans',
-      value: stats.loans.active.toLocaleString(),
-      change: '₦' + stats.loans.totalOutstanding.toLocaleString(),
-      increase: false,
-      icon: FaHandHoldingUsd,
-      color: 'from-orange-500 to-red-500',
-      link: '/admin/loans'
-    }
+    { title: 'Total Members', value: stats.members.total.toLocaleString(), change: '+12%', icon: FaUsers, color: 'text-blue-600 bg-blue-100', href: '/admin/members' },
+    { title: 'Active Members', value: stats.members.active.toLocaleString(), change: '+8%', icon: FaUserFriends, color: 'text-emerald-600 bg-emerald-100', href: '/admin/members?status=active' },
+    { title: 'Total Savings', value: `₦${stats.savings.total.toLocaleString()}`, change: '+15%', icon: FaPiggyBank, color: 'text-purple-600 bg-purple-100', href: '/admin/savings' },
+    { title: 'Active Loans', value: stats.loans.active.toLocaleString(), change: `₦${stats.loans.totalOutstanding.toLocaleString()}`, icon: FaHandHoldingUsd, color: 'text-orange-600 bg-orange-100', href: '/admin/loans' },
   ];
 
   const monthlyData = [
@@ -127,237 +63,111 @@ export default function AdminDashboardPage() {
   ];
 
   const pendingApprovals = [
-    { id: 1, type: 'member', name: 'John Doe', action: 'Account Verification', time: '2 hours ago' },
-    { id: 2, type: 'loan', name: 'Sarah Johnson', action: 'Loan Application - ₦500,000', time: '3 hours ago' },
-    { id: 3, type: 'withdrawal', name: 'Michael Okonkwo', action: 'Withdrawal - ₦150,000', time: '5 hours ago' },
-    { id: 4, type: 'member', name: 'Grace Adeyemi', action: 'Account Verification', time: '1 day ago' }
+    { id: 1, type: 'member', name: 'John Doe', action: 'Account Verification', time: '2h ago' },
+    { id: 2, type: 'loan', name: 'Sarah Johnson', action: 'Loan - ₦500,000', time: '3h ago' },
+    { id: 3, type: 'withdrawal', name: 'Michael Okonkwo', action: 'Withdrawal - ₦150,000', time: '5h ago' },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-primary">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-1">Manage members, savings, loans, and cooperative operations</p>
-        </div>
-        
-        <div className="flex items-center space-x-3">
-          <button className="relative p-3 bg-white rounded-xl shadow-sm hover:shadow-md transition">
-            <FaBell className="text-gray-600" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-              {pendingApprovals.length}
-            </span>
-          </button>
-          <Link href="/admin/settings" className="btn-outline">
-            Settings
-          </Link>
-        </div>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((stat, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Link href={stat.link} className="stat-card block">
-              <div className="flex justify-between items-start mb-4">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white`}>
-                  <stat.icon className="text-xl" />
-                </div>
-                <div className={`flex items-center text-sm ${stat.increase ? 'text-green-600' : 'text-blue-600'}`}>
-                  {stat.increase ? <FaArrowUp className="mr-1" /> : <FaChartLine className="mr-1" />}
-                  {stat.change}
-                </div>
-              </div>
-              <div className="stat-value">{stat.value}</div>
-              <div className="stat-label">{stat.title}</div>
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Charts Section */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Growth Chart */}
-        <div className="lg:col-span-2 card">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-primary">Growth Overview</h3>
-            <select className="px-3 py-1 border rounded-lg text-sm">
-              <option>Last 6 Months</option>
-              <option>Last Year</option>
-              <option>All Time</option>
-            </select>
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+            <p className="text-sm text-gray-500">Manage cooperative operations</p>
           </div>
-          
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="month" stroke="#64748b" />
-              <YAxis yAxisId="left" stroke="#1a3a5c" />
-              <YAxis yAxisId="right" orientation="right" stroke="#c4963d" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white', 
-                  border: 'none', 
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-                }}
-              />
-              <Line yAxisId="left" type="monotone" dataKey="members" stroke="#1a3a5c" strokeWidth={2} name="Members" />
-              <Line yAxisId="right" type="monotone" dataKey="savings" stroke="#c4963d" strokeWidth={2} name="Savings (₦)" />
-              <Line yAxisId="right" type="monotone" dataKey="loans" stroke="#e8c77a" strokeWidth={2} name="Loans (₦)" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Loan Distribution */}
-        <div className="card">
-          <h3 className="text-lg font-bold mb-6 text-primary">Loan Distribution</h3>
-          
-          <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie
-                data={loanDistribution}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={3}
-                dataKey="value"
-              >
-                {loanDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-          
-          <div className="mt-4 space-y-2">
-            {loanDistribution.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div 
-                    className="w-3 h-3 rounded-full mr-2" 
-                    style={{ backgroundColor: item.color }}
-                  ></div>
-                  <span className="text-sm text-gray-600">{item.name}</span>
-                </div>
-                <span className="text-sm font-semibold">{item.value}%</span>
-              </div>
-            ))}
+          <div className="flex items-center gap-2">
+            <button className="relative p-2 bg-white rounded-lg border hover:bg-gray-50">
+              <FaBell className="text-gray-500" size={16} />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">{pendingApprovals.length}</span>
+            </button>
+            <Link href="/admin/settings" className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">Settings</Link>
           </div>
         </div>
-      </div>
 
-      {/* Recent Activities & Pending Approvals */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Recent Members */}
-        <div className="card">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-primary">Recent Members</h3>
-            <Link href="/admin/members" className="text-sm text-secondary hover:text-primary transition">
-              View All →
-            </Link>
+        {/* Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          {statCards.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
+              <Link href={stat.href} className="block bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
+                <div className="flex items-center justify-between">
+                  <div className={`p-3 rounded-xl ${stat.color}`}><stat.icon size={20} /></div>
+                  <span className="text-xs font-medium text-green-600 flex items-center gap-1"><FaArrowUp size={10} />{stat.change}</span>
+                </div>
+                <div className="mt-4">
+                  <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
+                  <p className="text-sm text-gray-500">{stat.title}</p>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Charts */}
+        <div className="grid lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5">
+            <h3 className="font-semibold text-gray-800 mb-4">Growth Overview</h3>
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} />
+                <YAxis stroke="#94a3b8" fontSize={12} />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                <Line type="monotone" dataKey="members" stroke="#1a3a5c" strokeWidth={2} name="Members" />
+                <Line type="monotone" dataKey="savings" stroke="#c4963d" strokeWidth={2} name="Savings" />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
-          
-          <div className="space-y-3">
-            {activities.recentMembers.map((member: any) => (
-              <div key={member.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold">
-                    {member.firstName[0]}{member.lastName[0]}
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-800">{member.firstName} {member.lastName}</p>
-                    <p className="text-xs text-gray-500">{member.memberId}</p>
-                  </div>
+
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <h3 className="font-semibold text-gray-800 mb-4">Loan Distribution</h3>
+            <ResponsiveContainer width="100%" height={180}>
+              <PieChart>
+                <Pie data={loanDistribution} cx="50%" cy="50%" innerRadius={50} outerRadius={70} paddingAngle={3} dataKey="value">
+                  {loanDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="space-y-2 mt-4">
+              {loanDistribution.map((item, i) => (
+                <div key={i} className="flex justify-between text-sm">
+                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />{item.name}</div>
+                  <span className="font-medium">{item.value}%</span>
                 </div>
-                <div className="text-right">
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                    member.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {member.status}
-                  </span>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {new Date(member.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Pending Approvals */}
-        <div className="card">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-primary">Pending Approvals</h3>
-            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
-              {pendingApprovals.length} Pending
-            </span>
-          </div>
-          
-          <div className="space-y-3">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <h3 className="font-semibold text-gray-800 mb-4">Pending Approvals</h3>
+          <div className="space-y-2">
             {pendingApprovals.map((item) => (
               <div key={item.id} className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center gap-3">
                   {item.type === 'member' && <FaUserPlus className="text-blue-500" />}
                   {item.type === 'loan' && <FaHandHoldingUsd className="text-green-500" />}
                   {item.type === 'withdrawal' && <FaWallet className="text-orange-500" />}
                   <div>
-                    <p className="font-medium text-gray-800">{item.name}</p>
-                    <p className="text-sm text-gray-600">{item.action}</p>
+                    <p className="font-medium text-gray-800 text-sm">{item.name}</p>
+                    <p className="text-xs text-gray-600">{item.action}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-400">{item.time}</span>
-                  <button className="p-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition">
-                    <FaCheckCircle size={16} />
-                  </button>
-                  <button className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
-                    <FaTimesCircle size={16} />
-                  </button>
+                  <button className="p-1.5 bg-green-100 text-green-600 rounded hover:bg-green-200"><FaCheckCircle size={14} /></button>
+                  <button className="p-1.5 bg-red-100 text-red-600 rounded hover:bg-red-200"><FaTimesCircle size={14} /></button>
                 </div>
               </div>
             ))}
           </div>
-          
-          {pendingApprovals.length === 0 && (
-            <div className="text-center py-8">
-              <FaCheckCircle className="text-4xl text-green-500 mx-auto mb-3" />
-              <p className="text-gray-600">No pending approvals</p>
-            </div>
-          )}
         </div>
       </div>
-
-      {/* Quick Actions */}
-      <div className="card">
-        <h3 className="text-lg font-bold text-primary mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Link href="/admin/members/add" className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition text-center">
-            <FaUserPlus className="text-2xl text-primary mx-auto mb-2" />
-            <span className="text-sm font-medium">Add Member</span>
-          </Link>
-          <Link href="/admin/loans/review" className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition text-center">
-            <FaHandHoldingUsd className="text-2xl text-primary mx-auto mb-2" />
-            <span className="text-sm font-medium">Review Loans</span>
-          </Link>
-          <Link href="/admin/withdrawals" className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition text-center">
-            <FaWallet className="text-2xl text-primary mx-auto mb-2" />
-            <span className="text-sm font-medium">Process Withdrawals</span>
-          </Link>
-          <Link href="/admin/reports" className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition text-center">
-            <FaChartLine className="text-2xl text-primary mx-auto mb-2" />
-            <span className="text-sm font-medium">Generate Reports</span>
-          </Link>
-        </div>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 }

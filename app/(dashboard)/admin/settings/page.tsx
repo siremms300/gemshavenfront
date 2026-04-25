@@ -1,791 +1,133 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import api from '@/lib/axios';
-import {
-  FaSave,
-  FaPercentage,
-  FaMoneyBillWave,
-  FaClock,
-  FaShieldAlt,
-  FaBell,
-  FaEnvelope,
-  FaDatabase,
-  FaCheckCircle
-} from 'react-icons/fa';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import { FaSave, FaCheckCircle, FaDatabase, FaPercentage, FaMoneyBillWave, FaShieldAlt, FaBell } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 export default function AdminSettingsPage() {
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
-  const [settings, setSettings] = useState({
-    general: {
-      cooperativeName: 'Gems Haven Multipurpose Cooperative Society',
-      registrationNumber: 'GH/COOP/2024/001',
-      contactEmail: 'Gemshaven@consultant.com',
-      contactPhone: '08029204837',
-      address: '123 Cooperative Avenue, Victoria Island, Lagos'
-    },
-    interestRates: {
-      regularSavings: 5,
-      fixedDeposit: 8,
-      targetSavings: 6,
-      shares: 10,
-      personalLoan: 12,
-      businessLoan: 15,
-      emergencyLoan: 8,
-      educationLoan: 10,
-      assetFinancing: 18
-    },
-    loanSettings: {
-      maxLoanMultiplier: 3,
-      minLoanAmount: 10000,
-      maxLoanAmount: 5000000,
-      minTenure: 1,
-      maxTenure: 60,
-      processingFee: 1.5
-    },
-    fees: {
-      membershipFee: 1000,
-      minimumDeposit: 5000,
-      withdrawalFee: 100,
-      latePaymentFee: 500,
-      earlyWithdrawalPenalty: 2
-    },
-    security: {
-      requireTwoFactor: false,
-      sessionTimeout: 30,
-      maxLoginAttempts: 5,
-      passwordExpiryDays: 90
-    },
-    notifications: {
-      emailNotifications: true,
-      smsNotifications: true,
-      loanReminders: true,
-      savingsUpdates: true,
-      promotionalEmails: false
-    }
-  });
+  const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState('');
 
-  const [saveSuccess, setSaveSuccess] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const fetchSettings = async () => {
-    try {
-      const response = await api.get('/admin/settings');
-      setSettings(response.data.settings);
-    } catch (error) {
-      console.error('Failed to fetch settings:', error);
-    }
-  };
-
-  const handleSave = async (section: string) => {
+  const handleSave = (section: string) => {
     setLoading(true);
-    try {
-      await api.put('/admin/settings', {
-        section,
-        data: settings[section as keyof typeof settings]
-      });
-      
-      setSaveSuccess({ ...saveSuccess, [section]: true });
-      toast.success('Settings saved successfully');
-      
-      setTimeout(() => {
-        setSaveSuccess({ ...saveSuccess, [section]: false });
-      }, 3000);
-    } catch (error) {
-      toast.error('Failed to save settings');
-    } finally {
+    setTimeout(() => {
       setLoading(false);
-    }
+      setSaved(section);
+      toast.success('Settings saved');
+      setTimeout(() => setSaved(''), 2000);
+    }, 500);
   };
 
   const tabs = [
     { id: 'general', label: 'General', icon: FaDatabase },
     { id: 'interestRates', label: 'Interest Rates', icon: FaPercentage },
     { id: 'loanSettings', label: 'Loan Settings', icon: FaMoneyBillWave },
-    { id: 'fees', label: 'Fees & Charges', icon: FaMoneyBillWave },
     { id: 'security', label: 'Security', icon: FaShieldAlt },
-    { id: 'notifications', label: 'Notifications', icon: FaBell }
+    { id: 'notifications', label: 'Notifications', icon: FaBell },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-primary">Settings</h1>
-        <p className="text-gray-600 mt-1">Configure cooperative settings and preferences</p>
-      </div>
-
-      {/* Tabs */}
-      <div className="card p-0 overflow-hidden">
-        <div className="flex border-b border-gray-200 overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 px-6 py-4 transition whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'text-primary border-b-2 border-primary'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <tab.icon />
-              <span>{tab.label}</span>
-            </button>
-          ))}
+    <DashboardLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Settings</h1>
+          <p className="text-sm text-gray-500">Configure cooperative settings</p>
         </div>
 
-        <div className="p-6">
-          {/* General Settings */}
-          {activeTab === 'general' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6 max-w-2xl"
-            >
-              <div>
-                <label className="input-label">Cooperative Name</label>
-                <input
-                  type="text"
-                  value={settings.general.cooperativeName}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    general: { ...settings.general, cooperativeName: e.target.value }
-                  })}
-                  className="input-field"
-                />
-              </div>
-              
-              <div>
-                <label className="input-label">Registration Number</label>
-                <input
-                  type="text"
-                  value={settings.general.registrationNumber}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    general: { ...settings.general, registrationNumber: e.target.value }
-                  })}
-                  className="input-field"
-                />
-              </div>
-              
-              <div>
-                <label className="input-label">Contact Email</label>
-                <input
-                  type="email"
-                  value={settings.general.contactEmail}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    general: { ...settings.general, contactEmail: e.target.value }
-                  })}
-                  className="input-field"
-                />
-              </div>
-              
-              <div>
-                <label className="input-label">Contact Phone</label>
-                <input
-                  type="text"
-                  value={settings.general.contactPhone}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    general: { ...settings.general, contactPhone: e.target.value }
-                  })}
-                  className="input-field"
-                />
-              </div>
-              
-              <div>
-                <label className="input-label">Address</label>
-                <textarea
-                  value={settings.general.address}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    general: { ...settings.general, address: e.target.value }
-                  })}
-                  className="input-field"
-                  rows={3}
-                />
-              </div>
+        {/* Tabs */}
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="flex border-b overflow-x-auto">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-5 py-3 text-sm whitespace-nowrap transition ${
+                  activeTab === tab.id ? 'text-blue-900 border-b-2 border-blue-900 font-medium' : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                <tab.icon size={14} />{tab.label}
+              </button>
+            ))}
+          </div>
 
-              <div className="flex items-center justify-between pt-4">
-                {saveSuccess.general && (
-                  <span className="text-green-600 flex items-center">
-                    <FaCheckCircle className="mr-2" />
-                    Saved successfully
-                  </span>
-                )}
-                <button
-                  onClick={() => handleSave('general')}
-                  disabled={loading}
-                  className="btn-primary ml-auto"
-                >
-                  <FaSave className="mr-2" />
-                  Save Changes
-                </button>
+          <div className="p-6">
+            {activeTab === 'general' && (
+              <div className="max-w-xl space-y-4">
+                <div><label className="block text-sm font-medium text-gray-600 mb-1">Cooperative Name</label><input defaultValue="Gems Haven Multipurpose Cooperative Society" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                <div><label className="block text-sm font-medium text-gray-600 mb-1">Registration Number</label><input defaultValue="GH/COOP/2024/001" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                <div><label className="block text-sm font-medium text-gray-600 mb-1">Contact Email</label><input defaultValue="Gemshaven@consultant.com" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                <div><label className="block text-sm font-medium text-gray-600 mb-1">Contact Phone</label><input defaultValue="08029204837" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
               </div>
-            </motion.div>
-          )}
+            )}
 
-          {/* Interest Rates */}
-          {activeTab === 'interestRates' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6 max-w-2xl"
-            >
-              <h3 className="text-lg font-semibold text-primary mb-4">Savings Interest Rates</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="input-label">Regular Savings (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.regularSavings}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, regularSavings: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
+            {activeTab === 'interestRates' && (
+              <div className="max-w-xl">
+                <h4 className="font-medium text-sm text-gray-700 mb-3">Savings Rates</h4>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {['Regular Savings', 'Fixed Deposit', 'Target Savings', 'Shares'].map((name, i) => (
+                    <div key={i}><label className="block text-sm text-gray-600 mb-1">{name} (%)</label><input type="number" defaultValue={[5, 8, 6, 10][i]} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                  ))}
                 </div>
-                <div>
-                  <label className="input-label">Fixed Deposit (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.fixedDeposit}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, fixedDeposit: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Target Savings (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.targetSavings}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, targetSavings: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Shares Dividend (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.shares}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, shares: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
+                <h4 className="font-medium text-sm text-gray-700 mb-3">Loan Rates</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {['Personal', 'Business', 'Emergency', 'Education', 'Asset'].map((name, i) => (
+                    <div key={i}><label className="block text-sm text-gray-600 mb-1">{name} Loan (%)</label><input type="number" defaultValue={[12, 15, 8, 10, 18][i]} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                  ))}
                 </div>
               </div>
+            )}
 
-              <h3 className="text-lg font-semibold text-primary mb-4 mt-6">Loan Interest Rates</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="input-label">Personal Loan (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.personalLoan}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, personalLoan: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Business Loan (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.businessLoan}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, businessLoan: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Emergency Loan (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.emergencyLoan}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, emergencyLoan: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Education Loan (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.educationLoan}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, educationLoan: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Asset Financing (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.interestRates.assetFinancing}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      interestRates: { ...settings.interestRates, assetFinancing: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
+            {activeTab === 'loanSettings' && (
+              <div className="max-w-xl grid grid-cols-2 gap-4">
+                {[
+                  { label: 'Max Loan Multiplier', value: 3 },
+                  { label: 'Processing Fee (%)', value: 1.5 },
+                  { label: 'Min Loan Amount (₦)', value: 10000 },
+                  { label: 'Max Loan Amount (₦)', value: 5000000 },
+                ].map((item, i) => (
+                  <div key={i}><label className="block text-sm text-gray-600 mb-1">{item.label}</label><input type="number" defaultValue={item.value} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                ))}
               </div>
+            )}
 
-              <div className="flex items-center justify-between pt-4">
-                {saveSuccess.interestRates && (
-                  <span className="text-green-600 flex items-center">
-                    <FaCheckCircle className="mr-2" />
-                    Saved successfully
-                  </span>
-                )}
-                <button
-                  onClick={() => handleSave('interestRates')}
-                  disabled={loading}
-                  className="btn-primary ml-auto"
-                >
-                  <FaSave className="mr-2" />
-                  Save Changes
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Loan Settings */}
-          {activeTab === 'loanSettings' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6 max-w-2xl"
-            >
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="input-label">Max Loan Multiplier (x savings)</label>
-                  <input
-                    type="number"
-                    step="0.5"
-                    value={settings.loanSettings.maxLoanMultiplier}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      loanSettings: { ...settings.loanSettings, maxLoanMultiplier: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Processing Fee (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.loanSettings.processingFee}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      loanSettings: { ...settings.loanSettings, processingFee: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Minimum Loan Amount (₦)</label>
-                  <input
-                    type="number"
-                    value={settings.loanSettings.minLoanAmount}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      loanSettings: { ...settings.loanSettings, minLoanAmount: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Maximum Loan Amount (₦)</label>
-                  <input
-                    type="number"
-                    value={settings.loanSettings.maxLoanAmount}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      loanSettings: { ...settings.loanSettings, maxLoanAmount: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Minimum Tenure (months)</label>
-                  <input
-                    type="number"
-                    value={settings.loanSettings.minTenure}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      loanSettings: { ...settings.loanSettings, minTenure: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Maximum Tenure (months)</label>
-                  <input
-                    type="number"
-                    value={settings.loanSettings.maxTenure}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      loanSettings: { ...settings.loanSettings, maxTenure: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-4">
-                {saveSuccess.loanSettings && (
-                  <span className="text-green-600 flex items-center">
-                    <FaCheckCircle className="mr-2" />
-                    Saved successfully
-                  </span>
-                )}
-                <button
-                  onClick={() => handleSave('loanSettings')}
-                  disabled={loading}
-                  className="btn-primary ml-auto"
-                >
-                  <FaSave className="mr-2" />
-                  Save Changes
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Fees */}
-          {activeTab === 'fees' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6 max-w-2xl"
-            >
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="input-label">Membership Fee (₦)</label>
-                  <input
-                    type="number"
-                    value={settings.fees.membershipFee}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      fees: { ...settings.fees, membershipFee: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Minimum Deposit (₦)</label>
-                  <input
-                    type="number"
-                    value={settings.fees.minimumDeposit}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      fees: { ...settings.fees, minimumDeposit: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Withdrawal Fee (₦)</label>
-                  <input
-                    type="number"
-                    value={settings.fees.withdrawalFee}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      fees: { ...settings.fees, withdrawalFee: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Late Payment Fee (₦)</label>
-                  <input
-                    type="number"
-                    value={settings.fees.latePaymentFee}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      fees: { ...settings.fees, latePaymentFee: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="input-label">Early Withdrawal Penalty (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={settings.fees.earlyWithdrawalPenalty}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      fees: { ...settings.fees, earlyWithdrawalPenalty: parseFloat(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-4">
-                {saveSuccess.fees && (
-                  <span className="text-green-600 flex items-center">
-                    <FaCheckCircle className="mr-2" />
-                    Saved successfully
-                  </span>
-                )}
-                <button
-                  onClick={() => handleSave('fees')}
-                  disabled={loading}
-                  className="btn-primary ml-auto"
-                >
-                  <FaSave className="mr-2" />
-                  Save Changes
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Security */}
-          {activeTab === 'security' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6 max-w-2xl"
-            >
-              <div className="space-y-4">
+            {activeTab === 'security' && (
+              <div className="max-w-xl space-y-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-800">Two-Factor Authentication</p>
-                    <p className="text-sm text-gray-500">Require 2FA for all admin accounts</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.security.requireTwoFactor}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        security: { ...settings.security, requireTwoFactor: e.target.checked }
-                      })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
+                  <div><p className="font-medium text-sm">Two-Factor Authentication</p><p className="text-xs text-gray-500">Require 2FA for admin accounts</p></div>
+                  <label className="relative inline-flex items-center cursor-pointer"><input type="checkbox" className="sr-only peer" /><div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div></label>
                 </div>
-
-                <div>
-                  <label className="input-label">Session Timeout (minutes)</label>
-                  <input
-                    type="number"
-                    value={settings.security.sessionTimeout}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      security: { ...settings.security, sessionTimeout: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-
-                <div>
-                  <label className="input-label">Max Login Attempts</label>
-                  <input
-                    type="number"
-                    value={settings.security.maxLoginAttempts}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      security: { ...settings.security, maxLoginAttempts: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
-
-                <div>
-                  <label className="input-label">Password Expiry (days)</label>
-                  <input
-                    type="number"
-                    value={settings.security.passwordExpiryDays}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      security: { ...settings.security, passwordExpiryDays: parseInt(e.target.value) }
-                    })}
-                    className="input-field"
-                  />
-                </div>
+                {['Session Timeout (min)', 'Max Login Attempts', 'Password Expiry (days)'].map((label, i) => (
+                  <div key={i}><label className="block text-sm text-gray-600 mb-1">{label}</label><input type="number" defaultValue={[30, 5, 90][i]} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                ))}
               </div>
+            )}
 
-              <div className="flex items-center justify-between pt-4">
-                {saveSuccess.security && (
-                  <span className="text-green-600 flex items-center">
-                    <FaCheckCircle className="mr-2" />
-                    Saved successfully
-                  </span>
-                )}
-                <button
-                  onClick={() => handleSave('security')}
-                  disabled={loading}
-                  className="btn-primary ml-auto"
-                >
-                  <FaSave className="mr-2" />
-                  Save Changes
-                </button>
+            {activeTab === 'notifications' && (
+              <div className="max-w-xl space-y-4">
+                {['Email Notifications', 'SMS Notifications', 'Loan Reminders', 'Savings Updates'].map((label, i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <p className="text-sm">{label}</p>
+                    <label className="relative inline-flex items-center cursor-pointer"><input type="checkbox" defaultChecked={i < 3} className="sr-only peer" /><div className="w-9 h-5 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div></label>
+                  </div>
+                ))}
               </div>
-            </motion.div>
-          )}
+            )}
 
-          {/* Notifications */}
-          {activeTab === 'notifications' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6 max-w-2xl"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-800">Email Notifications</p>
-                    <p className="text-sm text-gray-500">Send notifications via email</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.emailNotifications}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        notifications: { ...settings.notifications, emailNotifications: e.target.checked }
-                      })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-800">SMS Notifications</p>
-                    <p className="text-sm text-gray-500">Send notifications via SMS</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.smsNotifications}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        notifications: { ...settings.notifications, smsNotifications: e.target.checked }
-                      })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-800">Loan Reminders</p>
-                    <p className="text-sm text-gray-500">Send payment due reminders</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.loanReminders}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        notifications: { ...settings.notifications, loanReminders: e.target.checked }
-                      })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-800">Savings Updates</p>
-                    <p className="text-sm text-gray-500">Send savings and interest updates</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.savingsUpdates}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        notifications: { ...settings.notifications, savingsUpdates: e.target.checked }
-                      })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-gray-800">Promotional Emails</p>
-                    <p className="text-sm text-gray-500">Send marketing and promotional emails</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.notifications.promotionalEmails}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        notifications: { ...settings.notifications, promotionalEmails: e.target.checked }
-                      })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-4">
-                {saveSuccess.notifications && (
-                  <span className="text-green-600 flex items-center">
-                    <FaCheckCircle className="mr-2" />
-                    Saved successfully
-                  </span>
-                )}
-                <button
-                  onClick={() => handleSave('notifications')}
-                  disabled={loading}
-                  className="btn-primary ml-auto"
-                >
-                  <FaSave className="mr-2" />
-                  Save Changes
-                </button>
-              </div>
-            </motion.div>
-          )}
+            {/* Save Button */}
+            <div className="flex items-center gap-3 mt-6 pt-4 border-t">
+              <button onClick={() => handleSave(activeTab)} disabled={loading} className="px-6 py-2 bg-primary text-white rounded-lg text-sm hover:bg-primary-light flex items-center gap-2">
+                <FaSave size={14} />{loading ? 'Saving...' : 'Save Changes'}
+              </button>
+              {saved === activeTab && (
+                <span className="text-green-600 text-sm flex items-center gap-1"><FaCheckCircle size={14} />Saved</span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

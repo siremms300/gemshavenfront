@@ -20,7 +20,7 @@ import {
   FaLinkedinIn,
   FaShieldAlt
 } from 'react-icons/fa';
-import Header from '@/components/layout/Header';
+import PublicHeader from '@/components/layout/PublicHeader';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Logo from '@/components/shared/Logo';
@@ -99,7 +99,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      <PublicHeader />
 
       {/* Hero Section */}
       <section className="relative pt-24 lg:pt-28 pb-16 lg:pb-20 px-4 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">

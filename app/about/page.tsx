@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import PublicHeader from '@/components/layout/PublicHeader';
 import {
   FaCheckCircle,
   FaUsers,
@@ -10,9 +11,6 @@ import {
   FaShieldAlt,
   FaStar,
   FaArrowRight,
-  FaPhone,
-  FaEnvelope,
-  FaMapMarkerAlt
 } from 'react-icons/fa';
 
 export default function AboutPage() {
@@ -88,8 +86,10 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen">
+      <PublicHeader />
+
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary to-primary-light text-white py-24 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary to-primary-light text-white pt-24 lg:pt-28 pb-16 lg:pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"></div>
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl"></div>
@@ -101,8 +101,8 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6">About Gems Haven</h1>
-            <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4">About Gems Haven</h1>
+            <p className="text-lg lg:text-xl text-white/90 max-w-2xl mx-auto">
               Driving sustainable business growth, wealth creation, and shared prosperity for all members.
             </p>
           </motion.div>
@@ -110,16 +110,16 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section */}
-      <section className="py-20 px-4">
+      <section className="py-16 lg:py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl font-bold gradient-text mb-6">Our Story</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
                   Gems Haven Multipurpose Cooperative Society was founded in 2015 by a group of visionary 
@@ -144,16 +144,15 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative"
             >
-              <div className="bg-gradient-to-br from-primary to-primary-light rounded-3xl p-8 text-white">
-                <h3 className="text-2xl font-bold mb-6">Our Mission</h3>
-                <p className="text-white/90 mb-6">
+              <div className="bg-gradient-to-br from-primary to-primary-light rounded-2xl p-8 text-white">
+                <h3 className="text-xl font-bold mb-4">Our Mission</h3>
+                <p className="text-white/90 mb-6 text-sm leading-relaxed">
                   To empower our members with a clear and progressive growth mindset by fostering 
                   discipline, creativity, and innovation in all their endeavors.
                 </p>
-                <h3 className="text-2xl font-bold mb-6">Our Vision</h3>
-                <p className="text-white/90">
+                <h3 className="text-xl font-bold mb-4">Our Vision</h3>
+                <p className="text-white/90 text-sm leading-relaxed">
                   To be a world-class multipurpose cooperative society, driving sustainable business 
                   growth, wealth creation, and shared prosperity for all members.
                 </p>
@@ -164,9 +163,9 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-14 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -176,11 +175,11 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center text-white mb-4">
-                  <stat.icon className="text-2xl" />
+                <div className="w-14 h-14 mx-auto bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center text-white mb-3">
+                  <stat.icon className="text-xl" />
                 </div>
-                <div className="text-3xl font-bold gradient-text mb-2">{stat.value}</div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -188,21 +187,21 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-20 px-4">
+      <section className="py-16 lg:py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-14"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold gradient-text mb-4">Our Core Values</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">Our Core Values</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
               The principles that guide everything we do
             </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {values.map((value, index) => (
               <motion.div
                 key={index}
@@ -210,13 +209,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="card text-center group"
+                className="bg-white rounded-xl border border-gray-200 p-6 text-center hover:shadow-md transition group"
               >
-                <div className={`w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br ${value.color} flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform`}>
-                  <value.icon className="text-3xl" />
+                <div className={`w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${value.color} flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform`}>
+                  <value.icon className="text-2xl" />
                 </div>
-                <h3 className="text-xl font-bold text-primary mb-3">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
+                <h3 className="text-lg font-bold text-primary mb-2">{value.title}</h3>
+                <p className="text-gray-600 text-sm">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -224,65 +223,56 @@ export default function AboutPage() {
       </section>
 
       {/* Milestones */}
-      <section className="py-20 px-4 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-16 lg:py-20 px-4 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-14"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold gradient-text mb-4">Our Journey</h2>
-            <p className="text-xl text-gray-600">Key milestones in our growth story</p>
+            <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">Our Journey</h2>
+            <p className="text-gray-600">Key milestones in our growth story</p>
           </motion.div>
           
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-secondary/30"></div>
-            
-            <div className="space-y-12">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                  className={`relative flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
-                >
-                  <div className="w-1/2"></div>
-                  <div className="absolute left-1/2 transform -translate-x-1/2">
-                    <div className="w-6 h-6 bg-secondary rounded-full border-4 border-white shadow-lg"></div>
-                  </div>
-                  <div className={`w-1/2 ${index % 2 === 0 ? 'pl-12' : 'pr-12 text-right'}`}>
-                    <div className="card inline-block text-left max-w-md">
-                      <span className="text-3xl font-bold gradient-text">{milestone.year}</span>
-                      <h3 className="text-xl font-bold text-primary mt-2">{milestone.title}</h3>
-                      <p className="text-gray-600 mt-2">{milestone.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="relative pl-8 border-l-2 border-secondary/30 space-y-10">
+            {milestones.map((milestone, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative"
+              >
+                <div className="absolute -left-[33px] top-1 w-4 h-4 bg-secondary rounded-full border-4 border-white shadow"></div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{milestone.year}</span>
+                  <h3 className="text-lg font-bold text-primary mt-1">{milestone.title}</h3>
+                  <p className="text-gray-600 text-sm mt-1">{milestone.description}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Leadership Team */}
-      <section className="py-20 px-4">
+      <section className="py-16 lg:py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-14"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold gradient-text mb-4">Leadership Team</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">Leadership Team</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
               Experienced professionals dedicated to your financial success
             </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {team.map((member, index) => (
               <motion.div
                 key={index}
@@ -290,14 +280,14 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="card text-center"
+                className="bg-white rounded-xl border border-gray-200 p-6 text-center"
               >
-                <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4">
+                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4">
                   {member.image}
                 </div>
-                <h3 className="text-xl font-bold text-primary">{member.name}</h3>
-                <p className="text-secondary font-medium mb-2">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.bio}</p>
+                <h3 className="text-lg font-bold text-primary">{member.name}</h3>
+                <p className="text-secondary font-medium text-sm mb-2">{member.role}</p>
+                <p className="text-gray-600 text-xs">{member.bio}</p>
               </motion.div>
             ))}
           </div>
@@ -305,28 +295,28 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
+      <section className="py-16 lg:py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-light p-12 text-center text-white"
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-light p-10 sm:p-12 text-center text-white"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full opacity-20 blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent rounded-full opacity-20 blur-3xl"></div>
             
             <div className="relative z-10">
-              <h2 className="text-4xl font-bold mb-4">Become a Member Today</h2>
-              <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4">Become a Member Today</h2>
+              <p className="text-white/90 mb-8 max-w-xl mx-auto">
                 Join our community of forward-thinking individuals and start your journey towards financial freedom.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/register" className="btn-secondary text-lg px-8">
+                <Link href="/register" className="inline-flex items-center justify-center px-8 py-3 bg-secondary text-primary font-semibold rounded-full hover:bg-secondary-light transition">
                   Get Started
                   <FaArrowRight className="ml-2" />
                 </Link>
-                <Link href="/contact" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-3 rounded-full font-semibold transition-all duration-300 text-lg">
+                <Link href="/contact" className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-primary transition">
                   Contact Us
                 </Link>
               </div>
@@ -336,9 +326,11 @@ export default function AboutPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-primary text-white pt-16 pb-8 px-4">
+      <footer className="bg-primary text-white py-10 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-white/60">© {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.</p>
+          <p className="text-white/60 text-sm">
+            © {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>
