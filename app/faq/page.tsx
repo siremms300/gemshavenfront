@@ -14,9 +14,19 @@ import {
   FaMobileAlt
 } from 'react-icons/fa';
 
+// Define proper types
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface FAQCategories {
+  [key: string]: FAQ[];
+}
+
 export default function FAQPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [openCategory, setOpenCategory] = useState<string | null>('general');
+  const [openCategory, setOpenCategory] = useState<string>('general');
   const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>({});
 
   const categories = [
@@ -28,7 +38,7 @@ export default function FAQPage() {
     { id: 'technical', name: 'Technical', icon: FaMobileAlt }
   ];
 
-  const faqs = {
+  const faqs: FAQCategories = {
     general: [
       {
         question: 'What is Gems Haven Cooperative Society?',
@@ -36,121 +46,77 @@ export default function FAQPage() {
       },
       {
         question: 'How is Gems Haven different from a bank?',
-        answer: 'Unlike banks, Gems Haven is owned and operated by its members. Profits are shared among members through dividends and lower interest rates on loans. We focus on mutual benefit rather than maximizing shareholder returns.'
+        answer: 'Unlike banks, Gems Haven is owned and operated by its members. Profits are shared among members through dividends and lower interest rates on loans.'
       },
       {
-        question: 'Is Gems Haven registered and regulated?',
-        answer: 'Yes, Gems Haven is a registered cooperative society under the Nigerian Cooperative Societies Act and operates in compliance with all relevant regulations.'
+        question: 'Is Gems Haven registered?',
+        answer: 'Yes, Gems Haven is a registered cooperative society under the Nigerian Cooperative Societies Act.'
       },
       {
-        question: 'How do I contact customer support?',
-        answer: 'You can reach our customer support team via phone at 08029204837, email at Gemshaven@consultant.com, or visit our office at 123 Cooperative Avenue, Victoria Island, Lagos.'
+        question: 'How do I contact support?',
+        answer: 'You can reach us via phone at 08029204837, email at Gemshaven@consultant.com, or visit our office at Victoria Island, Lagos.'
       }
     ],
     membership: [
       {
         question: 'How do I become a member?',
-        answer: 'To become a member, simply click the "Get Started" or "Register" button on our website, complete the registration form with your personal details, and make the minimum initial deposit of ₦5,000.'
+        answer: 'Click the "Get Started" or "Register" button on our website, complete the registration form, and make the minimum initial deposit of ₦5,000.'
       },
       {
-        question: 'What are the requirements for membership?',
-        answer: 'You must be at least 18 years old, have a valid government-issued ID, provide proof of address, and make the minimum initial deposit. You\'ll also need a valid email address and phone number.'
+        question: 'What are the requirements?',
+        answer: 'You must be at least 18 years old, have a valid government-issued ID, and provide proof of address.'
       },
       {
         question: 'Is there a membership fee?',
-        answer: 'There is a one-time registration fee of ₦1,000 and a minimum initial savings deposit of ₦5,000 which goes into your savings account.'
-      },
-      {
-        question: 'Can I have a joint account?',
-        answer: 'Yes, we offer joint membership options for spouses or business partners. Please contact our membership team for more information.'
-      },
-      {
-        question: 'How do I update my membership information?',
-        answer: 'You can update your personal information through your member dashboard under the Profile section, or visit any of our offices with valid identification.'
+        answer: 'There is a one-time registration fee of ₦1,000 and a minimum initial savings deposit of ₦5,000.'
       }
     ],
     savings: [
       {
         question: 'What savings plans do you offer?',
-        answer: 'We offer Regular Savings (flexible deposits and withdrawals), Fixed Deposit (higher interest rates for locked funds), Target Savings (goal-oriented saving), and Cooperative Shares (ownership stake with dividend earnings).'
+        answer: 'We offer Regular Savings, Fixed Deposit, Target Savings, and Cooperative Shares with varying interest rates.'
       },
       {
-        question: 'What are the interest rates on savings?',
-        answer: 'Interest rates vary by plan: Regular Savings - 5% p.a., Fixed Deposit - 8% p.a., Target Savings - 6% p.a., and Shares - up to 10% p.a. in dividends.'
+        question: 'What are the interest rates?',
+        answer: 'Regular Savings: 5% p.a., Fixed Deposit: 8% p.a., Target Savings: 6% p.a., Shares: up to 10% p.a. in dividends.'
       },
       {
-        question: 'How is interest calculated?',
-        answer: 'Interest is calculated daily on your minimum monthly balance and credited to your account at the end of each month for regular savings, or at maturity for fixed deposits.'
-      },
-      {
-        question: 'Can I withdraw my savings anytime?',
-        answer: 'For Regular Savings, yes - you can withdraw anytime. Fixed Deposits have a lock period and early withdrawal may incur a penalty. Target Savings have restrictions to help you meet your goals.'
-      },
-      {
-        question: 'What is the minimum balance required?',
-        answer: 'The minimum balance varies by plan: Regular Savings - ₦1,000, Fixed Deposit - ₦50,000, Target Savings - ₦5,000, Shares - ₦10,000 per share.'
+        question: 'Can I withdraw anytime?',
+        answer: 'Regular Savings allow anytime withdrawal. Fixed Deposits have a lock period with early withdrawal penalties.'
       }
     ],
     loans: [
       {
-        question: 'What types of loans do you offer?',
-        answer: 'We offer Personal Loans, Business Loans, Emergency Loans, Education Loans, and Asset Financing. Each loan type has different terms and interest rates.'
+        question: 'What loan types are available?',
+        answer: 'We offer Personal, Business, Emergency, Education, and Asset Financing loans with competitive rates.'
       },
       {
         question: 'How much can I borrow?',
-        answer: 'Your loan eligibility is up to 3 times your total savings balance. The maximum amount also depends on the loan type and your repayment capacity.'
+        answer: 'You can borrow up to 3 times your total savings balance, subject to loan type limits.'
       },
       {
-        question: 'What are the interest rates on loans?',
-        answer: 'Interest rates range from 8% for Emergency Loans to 18% for Asset Financing. Personal Loans are at 12%, Business Loans at 15%, and Education Loans at 10% per annum.'
-      },
-      {
-        question: 'How long does loan approval take?',
-        answer: 'Loan applications are reviewed within 24-48 hours. Once approved, funds are typically disbursed within 24 hours to your registered bank account.'
-      },
-      {
-        question: 'What happens if I miss a loan payment?',
-        answer: 'Late payments incur a penalty fee of ₦500 per missed payment. Consistent defaults may affect your credit rating with the cooperative and reduce future loan eligibility.'
-      },
-      {
-        question: 'Can I repay my loan early?',
-        answer: 'Yes, you can make early repayments without any penalty. Early repayment may reduce the total interest you pay.'
+        question: 'How long does approval take?',
+        answer: 'Loan applications are reviewed within 24-48 hours, with disbursement within 24 hours of approval.'
       }
     ],
     security: [
       {
-        question: 'How secure is my money?',
-        answer: 'All member savings are held in insured accounts with reputable banks. We use bank-grade security protocols for all transactions and regularly audit our financial systems.'
+        question: 'Is my money safe?',
+        answer: 'Yes, all member savings are held in insured accounts with reputable banks using bank-grade security.'
       },
       {
-        question: 'Is my personal information safe?',
-        answer: 'We use industry-standard encryption to protect your personal data. We never share your information with third parties without your consent, except as required by law.'
-      },
-      {
-        question: 'What should I do if I suspect fraud?',
-        answer: 'Contact our support team immediately at 08029204837 or email security@gemshaven.com. We will investigate and take appropriate action to protect your account.'
-      },
-      {
-        question: 'How do I reset my password?',
-        answer: 'Click "Forgot Password" on the login page. You\'ll receive an email with instructions to reset your password. For security, the link expires in 1 hour.'
+        question: 'Is my data protected?',
+        answer: 'We use industry-standard encryption and never share your data with third parties without consent.'
       }
     ],
     technical: [
       {
-        question: 'How do I access my account online?',
-        answer: 'Visit our website and click "Sign In". Enter your registered email and password to access your member dashboard. You can also download our mobile app for convenient access.'
+        question: 'How do I access my account?',
+        answer: 'Visit our website and click "Sign In", or download our mobile app for iOS and Android.'
       },
       {
-        question: 'Is there a mobile app?',
-        answer: 'Yes, our mobile app is available for both iOS and Android devices. Download it from the App Store or Google Play Store.'
-      },
-      {
-        question: 'What should I do if I can\'t log in?',
-        answer: 'First, ensure you\'re using the correct email and password. If you still can\'t log in, use the "Forgot Password" option. If problems persist, contact our technical support team.'
-      },
-      {
-        question: 'Which browsers are supported?',
-        answer: 'Our platform works best with the latest versions of Chrome, Firefox, Safari, and Edge. Please ensure your browser is up to date for the best experience.'
+        question: 'What if I can\'t log in?',
+        answer: 'Use the "Forgot Password" option or contact technical support for assistance.'
       }
     ]
   };
@@ -159,15 +125,23 @@ export default function FAQPage() {
     setOpenQuestions(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const filterFAQs = (category: string) => {
-    if (!searchTerm) return faqs[category as keyof typeof faqs];
+  const filterFAQs = (categoryId: string): FAQ[] => {
+    const categoryFaqs = faqs[categoryId] || [];
     
-    return faqs[category as keyof typeof faqs].filter(
+    if (!searchTerm) return categoryFaqs;
+    
+    const term = searchTerm.toLowerCase();
+    return categoryFaqs.filter(
       faq => 
-        faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
+        faq.question.toLowerCase().includes(term) ||
+        faq.answer.toLowerCase().includes(term)
     );
   };
+
+  // Fixed: Properly check if all categories have no results
+  const allCategoriesEmpty = Object.keys(faqs).every((categoryId) => {
+    return filterFAQs(categoryId).length === 0;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -207,7 +181,7 @@ export default function FAQPage() {
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Categories Sidebar */}
             <div className="lg:col-span-1">
-              <div className="card sticky top-24">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sticky top-24">
                 <h3 className="font-bold text-primary mb-4">Categories</h3>
                 <div className="space-y-2">
                   {categories.map((category) => {
@@ -224,11 +198,11 @@ export default function FAQPage() {
                             : 'hover:bg-gray-100 text-gray-700'
                         }`}
                       >
-                        <span className="flex items-center">
+                        <span className="flex items-center text-sm">
                           <Icon className="mr-3" />
                           {category.name}
                         </span>
-                        <span className={`text-sm ${
+                        <span className={`text-xs ${
                           openCategory === category.id ? 'text-white/80' : 'text-gray-500'
                         }`}>
                           {count}
@@ -238,15 +212,11 @@ export default function FAQPage() {
                   })}
                 </div>
                 
-                {/* Still Need Help */}
                 <div className="mt-6 p-4 bg-secondary/10 rounded-lg">
-                  <h4 className="font-semibold text-primary mb-2">Still need help?</h4>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Can't find what you're looking for? Contact our support team.
-                  </p>
+                  <h4 className="font-semibold text-primary text-sm mb-2">Still need help?</h4>
                   <Link
                     href="/contact"
-                    className="btn-primary w-full text-sm py-2"
+                    className="block w-full text-center bg-primary text-white text-sm py-2 rounded-lg hover:bg-primary-light transition"
                   >
                     Contact Support
                   </Link>
@@ -269,7 +239,7 @@ export default function FAQPage() {
                     animate={{ opacity: 1 }}
                     className="space-y-4"
                   >
-                    <h2 className="text-2xl font-bold gradient-text mb-6">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
                       {category.name} Questions
                     </h2>
                     
@@ -283,11 +253,11 @@ export default function FAQPage() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.05 }}
-                          className="card overflow-hidden"
+                          className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden"
                         >
                           <button
                             onClick={() => toggleQuestion(questionId)}
-                            className="w-full flex items-center justify-between text-left"
+                            className="w-full flex items-center justify-between text-left p-4"
                           >
                             <h3 className="font-semibold text-primary pr-4">{faq.question}</h3>
                             <FaChevronDown className={`text-secondary transition-transform flex-shrink-0 ${
@@ -304,7 +274,7 @@ export default function FAQPage() {
                                 transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                               >
-                                <div className="pt-4 mt-4 border-t border-gray-100 text-gray-600 leading-relaxed">
+                                <div className="px-4 pb-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
                                   {faq.answer}
                                 </div>
                               </motion.div>
@@ -317,7 +287,8 @@ export default function FAQPage() {
                 );
               })}
               
-              {searchTerm && Object.values(faqs).every(cat => filterFAQs(cat).length === 0) && (
+              {/* No Results Message - Fixed condition */}
+              {searchTerm && allCategoriesEmpty && (
                 <div className="text-center py-12">
                   <FaQuestionCircle className="text-6xl text-gray-300 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-gray-600 mb-2">No results found</h3>
@@ -340,7 +311,7 @@ export default function FAQPage() {
       {/* Footer */}
       <footer className="bg-primary text-white py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-white/60">© {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.</p>
+          <p className="text-white/60 text-sm">© {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.</p>
         </div>
       </footer>
     </div>
