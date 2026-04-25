@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials: LoginCredentials): Promise<void> => {
     try {
       const response = await api.post<AuthResponse>('/auth/login', {
         email: credentials.email.trim().toLowerCase(),
@@ -100,7 +100,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userData);
 
       toast.success(message || 'Login successful!');
-      return userData;
     } catch (error: any) {
       console.error('Login error:', error);
       
@@ -120,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async (data: RegisterData) => {
+  const register = async (data: RegisterData): Promise<void> => {
     try {
       const payload = {
         firstName: data.firstName.trim(),
@@ -129,8 +128,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         phone: data.phone.trim(),
         password: data.password
       };
-
-      console.log('Sending registration data:', payload);
 
       const response = await api.post<AuthResponse>('/auth/register', payload);
       const { token, user: userData, message } = response.data;
@@ -144,7 +141,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userData);
 
       toast.success(message || 'Registration successful!');
-      return userData;
     } catch (error: any) {
       console.error('Registration error:', error);
       
@@ -179,7 +175,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = '/';
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
     loading,
     login,
