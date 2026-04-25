@@ -27,33 +27,33 @@ export default function PublicHeader() {
     { label: 'FAQ', href: '/faq' },
   ];
 
-  // Header background based on scroll and page
-  const headerBg = () => {
-    if (isHomePage && !scrolled) return 'bg-transparent';
-    return 'bg-white shadow-sm border-b border-gray-200';
-  };
-
   // Text color based on scroll and page
   const textColor = () => {
-    if (isHomePage && !scrolled) return 'text-primary';
+    if (isHomePage && !scrolled) return 'text-primary hover:text-primary-light';
     return 'text-gray-700 hover:text-primary';
   };
 
-  // Logo variant based on scroll
-  const logoVariant = () => {
-    if (isHomePage && !scrolled) return 'default';
-    return 'default';
+  // Button variant for sign in
+  const signInButtonClass = () => {
+    if (isHomePage && !scrolled) {
+      return 'border-primary text-primary hover:bg-primary hover:text-white';
+    }
+    return '';
   };
 
-  if (isAuthPage) return null; // Auth pages have their own simple header
+  if (isAuthPage) return null;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBg()}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isHomePage && !scrolled 
+        ? 'bg-white/20 backdrop-blur-sm' 
+        : 'bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-200'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
-            <Logo size="md" variant={logoVariant()} />
+            <Logo size="md" variant="default" />
           </Link>
 
           {/* Desktop Nav */}
@@ -72,12 +72,19 @@ export default function PublicHeader() {
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
             <Link href="/login">
-              <Button variant={isHomePage && !scrolled ? 'outline' : 'outline'} size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className={signInButtonClass()}
+              >
                 Sign In
               </Button>
             </Link>
             <Link href="/register">
-              <Button variant={isHomePage && !scrolled ? 'primary' : 'primary'} size="sm">
+              <Button 
+                variant={isHomePage && !scrolled ? 'secondary' : 'primary'} 
+                size="sm"
+              >
                 Get Started
               </Button>
             </Link>
@@ -87,9 +94,10 @@ export default function PublicHeader() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileOpen ? (
-              <FaTimes className={`text-lg ${isHomePage && !scrolled ? 'text-primary' : 'text-gray-600'}`} />
+              <FaTimes className="text-lg text-gray-600" />
             ) : (
               <FaBars className={`text-lg ${isHomePage && !scrolled ? 'text-primary' : 'text-gray-600'}`} />
             )}
