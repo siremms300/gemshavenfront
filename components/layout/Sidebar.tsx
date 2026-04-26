@@ -62,7 +62,7 @@ export function Sidebar({ isOpen, mobileOpen, onToggle, onClose }: SidebarProps)
           <div className="w-7 h-7 bg-gradient-to-br from-secondary to-accent rounded flex items-center justify-center flex-shrink-0">
             <span className="text-primary font-bold text-xs">GH</span>
           </div>
-          {isOpen && <span className="font-bold text-sm whitespace-nowrap">GEMS HAVEN</span>}
+          {isOpen && <span className="font-bold text-sm whitespace-nowrap">Two Hands</span>}
         </Link>
         <button onClick={onClose} className="lg:hidden p-1 hover:bg-white/10 rounded">
           <FaTimes size={16} />

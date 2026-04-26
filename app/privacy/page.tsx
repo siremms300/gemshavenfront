@@ -84,7 +84,7 @@ export default function PrivacyPage() {
           >
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-600 mb-8">
-                At Gems Haven Multipurpose Cooperative Society, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our platform and services.
+                At Two Hands Multipurpose Cooperative Society, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our platform and services.
               </p>
               
               {sections.map((section, index) => (
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
       {/* Footer */}
       <footer className="bg-primary text-white py-8 px-4 mt-12">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-white/60">© {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.</p>
+          <p className="text-white/60">© {new Date().getFullYear()} Two Hands Multipurpose Cooperative Society. All rights reserved.</p>
         </div>
       </footer>
     </div>

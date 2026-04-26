@@ -17,14 +17,14 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Gems Haven - Multipurpose Cooperative Society',
+  title: 'Two Hands - Multipurpose Cooperative Society',
   description: 'Driving sustainable business growth, wealth creation, and shared prosperity for all members.',
   keywords: 'cooperative, savings, loans, business growth, wealth creation, Nigeria',
-  authors: [{ name: 'Gems Haven Cooperative' }],
+  authors: [{ name: 'Two Hands Cooperative' }],
   viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
-    title: 'Gems Haven Cooperative Society',
+    title: 'Two Hands Cooperative Society',
     description: 'Join a community of forward-thinking individuals committed to financial independence.',
     type: 'website',
   },

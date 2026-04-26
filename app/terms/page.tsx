@@ -7,11 +7,11 @@ export default function TermsPage() {
   const sections = [
     {
       title: '1. Acceptance of Terms',
-      content: 'By accessing or using the Gems Haven Cooperative Society platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.'
+      content: 'By accessing or using the Two Hands Cooperative Society platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.'
     },
     {
       title: '2. Membership Eligibility',
-      content: 'To become a member of Gems Haven Cooperative Society, you must be at least 18 years of age, possess a valid government-issued identification, and be capable of entering into a legally binding agreement. By registering, you represent and warrant that you meet all eligibility requirements.'
+      content: 'To become a member of Two Hands Cooperative Society, you must be at least 18 years of age, possess a valid government-issued identification, and be capable of entering into a legally binding agreement. By registering, you represent and warrant that you meet all eligibility requirements.'
     },
     {
       title: '3. Account Registration',
@@ -39,11 +39,11 @@ export default function TermsPage() {
     },
     {
       title: '9. Intellectual Property',
-      content: 'All content, trademarks, logos, and intellectual property on the Gems Haven platform are owned by or licensed to Gems Haven Cooperative Society. You may not reproduce, distribute, or create derivative works without our express written permission.'
+      content: 'All content, trademarks, logos, and intellectual property on the Two Hands platform are owned by or licensed to Two Hands Cooperative Society. You may not reproduce, distribute, or create derivative works without our express written permission.'
     },
     {
       title: '10. Limitation of Liability',
-      content: 'Gems Haven Cooperative Society shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the platform. Our total liability shall not exceed the amount of fees paid by you in the preceding twelve months.'
+      content: 'Two Hands Cooperative Society shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the platform. Our total liability shall not exceed the amount of fees paid by you in the preceding twelve months.'
     },
     {
       title: '11. Termination',
@@ -92,7 +92,7 @@ export default function TermsPage() {
           >
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-600 mb-8">
-                Welcome to Gems Haven Multipurpose Cooperative Society. These Terms of Service govern your use of our platform and services. Please read them carefully before using our services.
+                Welcome to Two Hands Multipurpose Cooperative Society. These Terms of Service govern your use of our platform and services. Please read them carefully before using our services.
               </p>
               
               {sections.map((section, index) => (
@@ -110,7 +110,7 @@ export default function TermsPage() {
               
               <div className="mt-8 p-6 bg-gray-50 rounded-xl">
                 <p className="text-gray-700">
-                  By using Gems Haven Cooperative Society's services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
+                  By using Two Hands Cooperative Society's services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
                 </p>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function TermsPage() {
       {/* Footer */}
       <footer className="bg-primary text-white py-8 px-4 mt-12">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-white/60">© {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.</p>
+          <p className="text-white/60">© {new Date().getFullYear()} Two Hands Multipurpose Cooperative Society. All rights reserved.</p>
         </div>
       </footer>
     </div>

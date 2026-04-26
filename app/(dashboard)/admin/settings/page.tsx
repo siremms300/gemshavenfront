@@ -56,7 +56,7 @@ export default function AdminSettingsPage() {
           <div className="p-6">
             {activeTab === 'general' && (
               <div className="max-w-xl space-y-4">
-                <div><label className="block text-sm font-medium text-gray-600 mb-1">Cooperative Name</label><input defaultValue="Gems Haven Multipurpose Cooperative Society" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                <div><label className="block text-sm font-medium text-gray-600 mb-1">Cooperative Name</label><input defaultValue="Two Hands Multipurpose Cooperative Society" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                 <div><label className="block text-sm font-medium text-gray-600 mb-1">Registration Number</label><input defaultValue="GH/COOP/2024/001" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                 <div><label className="block text-sm font-medium text-gray-600 mb-1">Contact Email</label><input defaultValue="Gemshaven@consultant.com" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                 <div><label className="block text-sm font-medium text-gray-600 mb-1">Contact Phone</label><input defaultValue="08029204837" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>

@@ -273,7 +273,7 @@ export default function ContactPage() {
               {/* Map */}
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden h-48 sm:h-56">
                 <iframe
-                  title="Gems Haven Location"
+                  title="Two Hands Location"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.727284374528!2d3.421983!3d6.428059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf53c4e3b4b5b%3A0x8c9f8b5e8b5e8b5e!2sVictoria%20Island%2C%20Lagos!5e0!3m2!1sen!2sng!4v1620000000000!5m2!1sen!2sng"
                   width="100%"
                   height="100%"
@@ -370,7 +370,7 @@ export default function ContactPage() {
       <footer className="bg-primary text-white py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-white/60 text-xs">
-            © {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.
+            © {new Date().getFullYear()} Two Hands Multipurpose Cooperative Society. All rights reserved.
           </p>
         </div>
       </footer>

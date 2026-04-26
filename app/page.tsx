@@ -80,7 +80,7 @@ export default function HomePage() {
     {
       name: "Sarah Johnson",
       role: "Business Owner",
-      content: "Gems Haven transformed my business. The loan I received helped me expand my inventory and double my revenue.",
+      content: "Two Hands transformed my business. The loan I received helped me expand my inventory and double my revenue.",
       rating: 5
     },
     {
@@ -274,7 +274,7 @@ export default function HomePage() {
             className="text-center mb-12 lg:mb-16"
           >
             <h2 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Why Choose Gems Haven?
+              Why Choose Two Hands?
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
               We provide comprehensive financial solutions designed to help you achieve your goals
@@ -371,7 +371,7 @@ export default function HomePage() {
                 Ready to Transform Your Financial Future?
               </h2>
               <p className="text-base sm:text-lg mb-8 text-white/90 max-w-2xl mx-auto">
-                Join Gems Haven today and start your journey towards sustainable wealth creation
+                Join Two Hands today and start your journey towards sustainable wealth creation
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/register">
@@ -485,7 +485,7 @@ export default function HomePage() {
           
           <div className="border-t border-white/20 pt-6 text-center">
             <p className="text-white/50 text-xs sm:text-sm">
-              © {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.
+              © {new Date().getFullYear()} Two Hands Multipurpose Cooperative Society. All rights reserved.
             </p>
           </div>
         </div>

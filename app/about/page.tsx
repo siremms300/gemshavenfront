@@ -76,7 +76,7 @@ export default function AboutPage() {
   ];
 
   const milestones = [
-    { year: '2015', title: 'Founded', description: 'Gems Haven Cooperative Society was established with 50 founding members.' },
+    { year: '2015', title: 'Founded', description: 'Two Hands Cooperative Society was established with 50 founding members.' },
     { year: '2017', title: '1,000 Members', description: 'Reached our first major milestone of 1,000 active members.' },
     { year: '2019', title: 'Digital Platform', description: 'Launched our digital platform for seamless member transactions.' },
     { year: '2021', title: '₦1B Savings', description: 'Surpassed ₦1 billion in total member savings.' },
@@ -101,7 +101,7 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">About Gems Haven</h1>
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4">About Two Hands</h1>
             <p className="text-lg lg:text-xl text-white/90 max-w-2xl mx-auto">
               Driving sustainable business growth, wealth creation, and shared prosperity for all members.
             </p>
@@ -122,7 +122,7 @@ export default function AboutPage() {
               <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
-                  Gems Haven Multipurpose Cooperative Society was founded in 2015 by a group of visionary 
+                  Two Hands Multipurpose Cooperative Society was founded in 2015 by a group of visionary 
                   entrepreneurs who recognized the need for a financial institution that truly serves 
                   the interests of its members.
                 </p>
@@ -132,7 +132,7 @@ export default function AboutPage() {
                   financial independence and sustainable wealth creation.
                 </p>
                 <p>
-                  Today, Gems Haven stands as a testament to the power of collective effort and mutual 
+                  Today, Two Hands stands as a testament to the power of collective effort and mutual 
                   support. We've disbursed over ₦1.8 billion in loans, helping members start businesses, 
                   expand operations, and achieve their dreams.
                 </p>
@@ -329,7 +329,7 @@ export default function AboutPage() {
       <footer className="bg-primary text-white py-10 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-white/60 text-sm">
-            © {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.
+            © {new Date().getFullYear()} Two Hands Multipurpose Cooperative Society. All rights reserved.
           </p>
         </div>
       </footer>

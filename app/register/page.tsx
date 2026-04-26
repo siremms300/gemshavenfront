@@ -114,7 +114,7 @@ export default function RegisterPage() {
                   <Logo variant="default" size="md" />
                 </Link>
                 <h2 className="text-2xl lg:text-3xl font-bold gradient-text mb-2">Create Your Account</h2>
-                <p className="text-gray-600">Join Gems Haven and start your journey to financial freedom</p>
+                <p className="text-gray-600">Join Two Hands and start your journey to financial freedom</p>
               </div>
 
               {serverError && (
@@ -303,7 +303,7 @@ export default function RegisterPage() {
               <div className="mt-8 p-6 bg-white/10 rounded-xl backdrop-blur-sm">
                 <h4 className="font-semibold text-lg mb-2">Why Choose Us?</h4>
                 <p className="text-white/80 text-sm leading-relaxed">
-                  Join over 5,000 members who trust Gems Haven for their savings, 
+                  Join over 5,000 members who trust Two Hands for their savings, 
                   loans, and investment needs. We offer competitive rates and a 
                   supportive community.
                 </p>

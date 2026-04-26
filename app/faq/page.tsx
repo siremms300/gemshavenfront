@@ -45,16 +45,16 @@ export default function FAQPage() {
   const faqs: FAQCategories = {
     general: [
       {
-        question: 'What is Gems Haven Cooperative Society?',
-        answer: 'Gems Haven is a multipurpose cooperative society that provides savings, loans, and investment opportunities to its members. We are committed to driving sustainable business growth and wealth creation for all our members.',
+        question: 'What is Two Hands Cooperative Society?',
+        answer: 'Two Hands is a multipurpose cooperative society that provides savings, loans, and investment opportunities to its members. We are committed to driving sustainable business growth and wealth creation for all our members.',
       },
       {
-        question: 'How is Gems Haven different from a bank?',
-        answer: 'Unlike banks, Gems Haven is owned and operated by its members. Profits are shared among members through dividends and lower interest rates on loans. We focus on mutual benefit rather than maximizing shareholder returns.',
+        question: 'How is Two Hands different from a bank?',
+        answer: 'Unlike banks, Two Hands is owned and operated by its members. Profits are shared among members through dividends and lower interest rates on loans. We focus on mutual benefit rather than maximizing shareholder returns.',
       },
       {
-        question: 'Is Gems Haven registered and regulated?',
-        answer: 'Yes, Gems Haven is a registered cooperative society under the Nigerian Cooperative Societies Act and operates in compliance with all relevant regulations.',
+        question: 'Is Two Hands registered and regulated?',
+        answer: 'Yes, Two Hands is a registered cooperative society under the Nigerian Cooperative Societies Act and operates in compliance with all relevant regulations.',
       },
       {
         question: 'How do I contact customer support?',
@@ -195,7 +195,7 @@ export default function FAQPage() {
           >
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Frequently Asked Questions</h1>
             <p className="text-lg text-white/90 max-w-xl mx-auto mb-6">
-              Find answers to common questions about Gems Haven Cooperative Society
+              Find answers to common questions about Two Hands Cooperative Society
             </p>
 
             {/* Search Bar */}
@@ -437,7 +437,7 @@ export default function FAQPage() {
       <footer className="bg-primary text-white py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-white/60 text-xs">
-            © {new Date().getFullYear()} Gems Haven Multipurpose Cooperative Society. All rights reserved.
+            © {new Date().getFullYear()} Two Hands Multipurpose Cooperative Society. All rights reserved.
           </p>
         </div>
       </footer>

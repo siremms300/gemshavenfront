@@ -35,12 +35,12 @@ export function Logo({
   return (
     <div className={cn('flex items-center space-x-3', className)}>
       <div className={cn('rounded-xl flex items-center justify-center font-bold flex-shrink-0', sizes[size], variants[variant])}>
-        GH
+        TH
       </div>
       {showText && (
         <div className="overflow-hidden">
           <h3 className={cn('font-bold leading-tight', textSizes[size], variant === 'light' ? 'text-white' : 'text-primary')}>
-            GEMS HAVEN
+            Two Hands
           </h3>
           <p className={cn('text-[10px] leading-tight', variant === 'light' ? 'text-white/60' : 'text-gray-500')}>
             Cooperative
